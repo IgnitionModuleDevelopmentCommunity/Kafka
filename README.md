@@ -24,7 +24,7 @@ Install the compiled module.
 
 ### SSL Configuration
 To configure SSL:
-1. For client certs to be shared to the Kafka server, we'll re-use the cert in Ignition found in: `C:\Program Files\Inductive Automation\Ignition_kafka\webserver\ssl.key`
+1. For client certs to be shared to the Kafka server, we'll re-use the cert in Ignition found in: `C:\Program Files\Inductive Automation\Ignition\webserver\ssl.key`
 2. 
 * If the Kafka server's cert is signed by a known CA, the truststore found in Java's trust store can be used. 
 * Self signed certs will need the CA added to a new keystore, and the keystore needs to be placed in: `C:\Program Files\Inductive Automation\Ignition\data\truststore.jks`
