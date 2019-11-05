@@ -1,0 +1,3 @@
+org\ignitionmdc\apache\kafka\KafkaRPC.class
+org\ignitionmdc\apache\kafka\Kafka_Com.class
+org\ignitionmdc\apache\kafka\mainTest.class
