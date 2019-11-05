@@ -20,7 +20,8 @@ You will need the following to use this module:
  - Ignition v.7.7.0 - Ignition v.7.9.x
 
 ## Getting started
-Install the compiled module.
+Compile and install the module.
+Note: If you are installing an unsigned version of the module, ensure Ignition is configured in developer mode to allow unsigned modules to run. Alternatively you can sign the module and install the module into any gateway.
 
 ### SSL Configuration
 To configure SSL:
