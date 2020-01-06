@@ -40,7 +40,7 @@
             <plugin>
                 <groupId>com.inductiveautomation.ignitionsdk</groupId>
                 <artifactId>ignition-maven-plugin</artifactId>
-                <version>1.0.8</version>
+                <version>1.1.0</version>
 
                 <executions>
                     <execution>
@@ -75,8 +75,8 @@
                     <moduleName>${project.parent.name}</moduleName>
                     <moduleDescription>${project.description}</moduleDescription>
                     <moduleVersion>1.0.09192019</moduleVersion>
-                    <requiredIgnitionVersion>7.7.0</requiredIgnitionVersion>
-                    <requiredFrameworkVersion>6</requiredFrameworkVersion>
+                    <requiredIgnitionVersion>8.0.0</requiredIgnitionVersion>
+                    <requiredFrameworkVersion>8</requiredFrameworkVersion>
 
                     <hooks>
                         <hook>

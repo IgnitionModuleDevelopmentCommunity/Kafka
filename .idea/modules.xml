@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/kafka.iml" filepath="$PROJECT_DIR$/kafka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kafka-build/kafka-build.iml" filepath="$PROJECT_DIR$/kafka-build/kafka-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kafka-client/kafka-client.iml" filepath="$PROJECT_DIR$/kafka-client/kafka-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kafka-common/kafka-common.iml" filepath="$PROJECT_DIR$/kafka-common/kafka-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kafka-designer/kafka-designer.iml" filepath="$PROJECT_DIR$/kafka-designer/kafka-designer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kafka-gateway/kafka-gateway.iml" filepath="$PROJECT_DIR$/kafka-gateway/kafka-gateway.iml" />
+    </modules>
+  </component>
+</project>
