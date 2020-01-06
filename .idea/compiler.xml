@@ -16,7 +16,7 @@
     <bytecodeTargetLevel>
       <module name="kafka" target="1.8" />
       <module name="kafka-build" target="1.8" />
-      <module name="kafka-client" target="1.6" />
+      <module name="kafka-client" target="1.8" />
       <module name="kafka-common" target="1.8" />
       <module name="kafka-designer" target="1.8" />
       <module name="kafka-gateway" target="1.8" />
