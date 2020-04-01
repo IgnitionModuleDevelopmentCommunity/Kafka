@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.python:jython:2.7.1-ia3">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/python/jython/2.7.1-ia3/jython-2.7.1-ia3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/python/jython/2.7.1-ia3/jython-2.7.1-ia3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/python/jython/2.7.1-ia3/jython-2.7.1-ia3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

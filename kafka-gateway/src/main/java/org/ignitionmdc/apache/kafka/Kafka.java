@@ -153,7 +153,8 @@ public class Kafka implements KafkaRPC {
 
     public static String getGatewayHome(){
 
-        String absPath = context.getHome().getAbsolutePath();
+        //String absPath = context.getHome().getAbsolutePath();
+        String absPath = context.getSystemManager().getDataDir().getAbsolutePath();
         return absPath.substring(0,absPath.lastIndexOf(File.separator));
     }
     public static boolean fileExists(String path){
