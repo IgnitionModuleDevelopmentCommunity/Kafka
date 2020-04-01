@@ -38,7 +38,8 @@ public class GatewayHook extends AbstractGatewayModuleHook {
         Kafka kInst = new Kafka(context);
         manager.addScriptModule("system.kafka", kInst);
     }
-    public Object getRPCHandler(ClientReqSession session, Long projectId){
+    @Override
+    public Object getRPCHandler(ClientReqSession session, String projectName){
         return new Kafka(context);
     }
 
