@@ -176,6 +176,7 @@ public class Kafka implements KafkaRPC {
         while (iter.hasNext()) {
             HashMap hMap = new HashMap();
             ConsumerRecord cr = iter.next();
+            hMap.put("headers", cr.headers());
             hMap.put("offset", cr.offset());
             hMap.put("key", cr.key());
             hMap.put("value", cr.value());
