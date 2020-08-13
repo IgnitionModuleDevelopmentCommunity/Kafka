@@ -74,8 +74,8 @@
                     <moduleId>org.ignitionmdc.apache.kafka.kafka</moduleId>
                     <moduleName>${project.parent.name}</moduleName>
                     <moduleDescription>${project.description}</moduleDescription>
-                    <moduleVersion>1.0.09192019</moduleVersion>
-                    <requiredIgnitionVersion>8.0.0</requiredIgnitionVersion>
+                    <moduleVersion>1.1.0.2020081314</moduleVersion>
+                    <requiredIgnitionVersion>8.0.14</requiredIgnitionVersion>
                     <requiredFrameworkVersion>8</requiredFrameworkVersion>
 
                     <hooks>

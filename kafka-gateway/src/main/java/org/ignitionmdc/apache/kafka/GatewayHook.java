@@ -38,6 +38,17 @@ public class GatewayHook extends AbstractGatewayModuleHook {
         Kafka kInst = new Kafka(context);
         manager.addScriptModule("system.kafka", kInst);
     }
+
+    @Override
+    public boolean isFreeModule() {
+        return true;
+    }
+
+    @Override
+    public boolean isMakerEditionCompatible() {
+        return true;
+    }
+
     @Override
     public Object getRPCHandler(ClientReqSession session, String projectName){
         return new Kafka(context);

@@ -132,9 +132,9 @@ public class Kafka implements KafkaRPC {
         }
         return makeHashList(cObj);
     }
+
 /*
     We always pass in the same data
-
  */
     public List<Map> RPCGetConsumer(String address, String topic, String groupname){
         String keyName = String.format("%s-%s-%s",address,topic,groupname);
@@ -151,35 +151,34 @@ public class Kafka implements KafkaRPC {
         return makeHashList(cObj);
     }
 
-    public static String getGatewayHome(){
-
-        //String absPath = context.getHome().getAbsolutePath();
+    private static String getGatewayHome(){
         String absPath = context.getSystemManager().getDataDir().getAbsolutePath();
         return absPath.substring(0,absPath.lastIndexOf(File.separator));
     }
-    public static boolean fileExists(String path){
+
+    private static boolean fileExists(String path){
         File fObj = new File(path);
         return fObj.exists();
     }
 
     /*
-        Use this helper function to decode the Consumer object
+        This helper function decodes the Consumer object
         into a list of hashmaps
     */
-    public List<Map> makeHashList(Consumer c) {
+    private List<Map> makeHashList(Consumer c) {
         List<Map> dict = new ArrayList();
 
         ConsumerRecords recs = c.poll(Duration.ofSeconds((5)));
         //c.commitSync();
         Iterator <ConsumerRecord<String,String>>iter = recs.iterator();
-        System.out.println(iter);
+        //System.out.println(iter);
         while (iter.hasNext()) {
             HashMap hMap = new HashMap();
             ConsumerRecord cr = iter.next();
-            hMap.put("headers", cr.headers());
-            hMap.put("offset", cr.offset());
-            hMap.put("key", cr.key());
-            hMap.put("value", cr.value());
+            //hMap.put("headers", cr.headers());    This needs to be properly serializable before putting into the hash map
+            hMap.put("offset",    cr.offset());
+            hMap.put("key",       cr.key());
+            hMap.put("value",     cr.value());
             hMap.put("timestamp", cr.timestamp());
             hMap.put("partition", cr.partition());
             dict.add(hMap);

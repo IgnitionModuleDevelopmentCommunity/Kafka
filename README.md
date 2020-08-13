@@ -17,7 +17,7 @@ Kafka is a pub-sub protocol allowing for various counterparts to publish message
 ## Requirements
 You will need the following to use this module:
 
- - Ignition v.8.0 +
+ - Ignition v.8.0.14 +
 
 ## Getting started
 Compile and install the module.
