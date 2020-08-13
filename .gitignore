@@ -1,0 +1,7 @@
+*.iml
+.idea
+kafka-build/target
+kafka-client/target
+kafka-common/target
+kafka-designer/target
+kafka-gateway/target
