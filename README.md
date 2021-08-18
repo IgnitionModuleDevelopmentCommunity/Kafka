@@ -2,13 +2,13 @@
 (Apache Kafka)[https://kafka.apache.org/]
 
 ## Summary 
-This module uses the Kafka 2.2.1 library, which is able to communicate with older versions of Kafka servers as well. The implementation here only includes the consumer part of the Kafka architecture. The producer could easily be extended following the existing implementation.
+This module uses the Kafka 2.2.1 library, which is able to communicate with older versions of Kafka servers as well. The implementation includes consumer and producer functions.
 
 <abbr title="Remote Procedure Call">RPC</abbr> is used as the interface to maintain the Ignition gateway to be the only entity directly communicating with the Kafka server. Ignition clients will call RPC functions to perform the subscription.
 
-I had also created a gateway global object to store the consumer objects in memory. This way the consumer object does not have to be created every time the poll is needed to execute. 
+Gateway global objects are used to store the consumer and producer objects in memory. This way the consumer/producer objects do not have to be created every time the consumer poll is needed to execute or whenn sending data to kafka.
 
-SSL has been included in the implementation.
+SSL has been included in the implementation.  The function to add SSL to a properties object has been seperated so that it can be used by consumer and producer.
 
 ## What is Kafka?
 Kafka is a pub-sub protocol allowing for various counterparts to publish messages and subscribe to messages. 
@@ -32,11 +32,30 @@ To configure SSL:
 
 
 ## To Use
-Simply to use:
+Consumer Usage:
 ```python
 serverPath = 'server:9093'
 consumer = system.kafka.getSSLConsumer(serverPath,'topicname','groupname') # if SSL is desired
 # consumer = system.kafka.getConsumer(serverPath,'topicname','groupname') # If ssl is not required
 for record in consumer:
 	print record["value"], record["timestamp"],record["offset"],record["key"],record["partition"]
+```
+
+Producer Usage:
+```python
+serverPath = "127.0.0.1:9092"
+producerKey = system.kafka.createProducer(serverPath)
+#producerKey = system.kafka.createSSLProducer(serverPath)
+
+success = system.kafka.transmitData(
+		producerKey,
+		"firstTopic",
+		"This data was produced by Ignition"
+		)
+				
+if success:
+	print("Data successfully sent")		
+else:
+	print("Issue encountered")	
+
 ```
