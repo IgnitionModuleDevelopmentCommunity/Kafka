@@ -4,8 +4,13 @@ package org.ignitionmdc.apache.kafka;
 
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 import org.apache.kafka.clients.consumer.*;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.config.SslConfigs;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,9 +78,27 @@ public class Kafka implements KafkaRPC {
         return consumer;
     }
 
+    public static Producer<String, String> getProducerObj(String address){
+        logger.debug("Creating a new non-ssl producer object");
+
+        Thread.currentThread().setContextClassLoader(null);
+        Properties props = buildProducerProps(address, false);
+        final Producer<String, String> producer = new KafkaProducer<String, String>(props);
+
+        return producer;
+    }
+
+    public static Producer<String, String> getSSLProducerObj(String address){
+        logger.debug("Creating a new ssl encrypted producer object");
+
+        Thread.currentThread().setContextClassLoader(null);
+        Properties props = buildProducerProps(address, true);
+        final Producer<String, String> producer = new KafkaProducer<String, String>(props);
+
+        return producer;
+    }
+
     private static Properties buildConsumerProps(String address, String groupname, boolean useSSL){
-        String homePath = getGatewayHome();
-        String sep = File.separator;
 
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, address);
@@ -89,35 +112,77 @@ public class Kafka implements KafkaRPC {
         props.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 300000);
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 1000);
+
         if (useSSL){
-            logger.debug("homepath = " + homePath);
-            props.put(SslConfigs.SSL_PROTOCOL_CONFIG,"SSL");
-            props.put("security.protocol","SSL");
-            props.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG,"");
-
-            // Keystore settings
-            logger.debug("SSL Keystore Path: "+ homePath+String.format("%swebserver%sssl.key",sep,sep,sep));
-
-            props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG,homePath+String.format("%swebserver%sssl.key",sep,sep,sep));
-            props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG,"ignition");
-            props.put(SslConfigs.SSL_KEY_PASSWORD_CONFIG,"ignition");
-
-            // Truststore settings
-            String truststorePath = homePath+String.format("%sdata%scertificates%struststore.jks",sep,sep,sep);
-            if (fileExists(truststorePath)) {
-                props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, truststorePath);
-                props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "ignition");
-            }
+            return getSSLProps(props);
         }
+        else{
+            return props;
+        }
+    }
 
+    private static Properties buildProducerProps(String address, boolean useSSL){
+
+        Properties props = new Properties();
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, address);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+
+        // safe producer settings
+        props.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
+        props.setProperty(ProducerConfig.ACKS_CONFIG, "all");
+        props.setProperty(ProducerConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE));
+        props.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "5");
+
+        if (useSSL){
+            return getSSLProps(props);
+        }
+        else{
+            return props;
+        }
+    }
+
+    private static Properties getSSLProps(Properties props){
+        String homePath = getGatewayHome();
+        String sep = File.separator;
+
+        logger.debug("homepath = " + homePath);
+        props.put(SslConfigs.SSL_PROTOCOL_CONFIG,"SSL");
+        props.put("security.protocol","SSL");
+        props.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG,"");
+
+        // Keystore settings
+        logger.debug("SSL Keystore Path: "+ homePath+String.format("%swebserver%sssl.key",sep,sep,sep));
+
+        props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG,homePath+String.format("%swebserver%sssl.key",sep,sep,sep));
+        props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG,"ignition");
+        props.put(SslConfigs.SSL_KEY_PASSWORD_CONFIG,"ignition");
+
+        // Truststore settings
+        String truststorePath = homePath+String.format("%sdata%scertificates%struststore.jks",sep,sep,sep);
+        if (fileExists(truststorePath)) {
+            props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, truststorePath);
+            props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "ignition");
+        }
         return props;
     }
+
     public List<Map> getSSLConsumer(String address, String topic, String groupname){
         return RPCGetSSLConsumer(address, topic, groupname);
     }
     public List<Map> getConsumer(String address, String topic, String groupname){
         return RPCGetConsumer(address, topic, groupname);
     }
+    public String createProducer(String address){
+        return RPCCreateProducer(address);
+    }
+    public String createSSLProducer(String address){
+        return RPCCreateSSLProducer(address);
+    }
+    public boolean transmitData(String producerKey, String topic, String data){
+        return RPCTransmitData(producerKey, topic, data);
+    }
+
     public List<Map> RPCGetSSLConsumer(String address, String topic, String groupname){
         String keyName = String.format("%s-%s-%s",address,topic,groupname);
 
@@ -133,9 +198,9 @@ public class Kafka implements KafkaRPC {
         return makeHashList(cObj);
     }
 
-/*
-    We always pass in the same data
- */
+    /*
+        We always pass in the same data
+     */
     public List<Map> RPCGetConsumer(String address, String topic, String groupname){
         String keyName = String.format("%s-%s-%s",address,topic,groupname);
 
@@ -149,6 +214,43 @@ public class Kafka implements KafkaRPC {
             GatewayHook.ConsumerHashMap.put(keyName, cObj);
         }
         return makeHashList(cObj);
+    }
+
+    public String RPCCreateProducer(String address){
+        String keyName = String.format("%s",address);
+
+        if (!GatewayHook.ProducerHashMap.containsKey(keyName)) {
+            Producer pObj = getProducerObj(address);
+            GatewayHook.ProducerHashMap.put(keyName, pObj);
+        }
+        return(keyName);
+    }
+
+    public String RPCCreateSSLProducer(String address){
+        String keyName = String.format("%s",address);
+
+        if (!GatewayHook.ProducerHashMap.containsKey(keyName)) {
+            Producer pObj = getSSLProducerObj(address);
+            GatewayHook.ProducerHashMap.put(keyName, pObj);
+        }
+        return(keyName);
+    }
+
+    public boolean RPCTransmitData(String producerKey, String topic, String data){
+        // Get the producer object from memory
+        try{
+            Producer pObj = GatewayHook.ProducerHashMap.get(producerKey);
+
+            ProducerRecord<String, String> record =
+                    new ProducerRecord<String, String>(topic, data);
+
+            pObj.send(record);
+            pObj.flush();
+            return true;
+        }
+        catch(Exception e){
+            return false;
+        }
     }
 
     private static String getGatewayHome(){
