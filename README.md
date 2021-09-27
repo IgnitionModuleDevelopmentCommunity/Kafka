@@ -29,6 +29,10 @@ To configure SSL:
 2. 
 * If the Kafka server's cert is signed by a known CA, the truststore found in Java's trust store can be used. 
 * Self signed certs will need the CA added to a new keystore, and the keystore needs to be placed in: `C:\Program Files\Inductive Automation\Ignition\data\truststore.jks`
+** Edit : As of 8.1 Ignition changed the truststore path to: `C:\Program Files\Inductive Automation\Ignition\data\certificates`. 
+   1. The extension on the "SSL file for the keystore was “.key” but the actual file extension needed to be “.pfx”
+   2. Modify the password and update the source code to reflect the password for the truststore.  
+** Credit/thanks to nicholas.robinson 
 
 
 ## To Use
