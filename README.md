@@ -2,7 +2,7 @@
 (Apache Kafka)[https://kafka.apache.org/]
 
 ## Summary 
-This module uses the Kafka 2.2.1 library, which is able to communicate with older versions of Kafka servers as well. The implementation includes consumer and producer functions.
+This module uses the Kafka ~~2.2.1~~ 3.7.1 library, which is able to communicate with older versions of Kafka servers as well. The implementation includes consumer and producer functions.
 
 <abbr title="Remote Procedure Call">RPC</abbr> is used as the interface to maintain the Ignition gateway to be the only entity directly communicating with the Kafka server. Ignition clients will call RPC functions to perform the subscription.
 
