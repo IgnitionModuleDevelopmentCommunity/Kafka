@@ -3,6 +3,7 @@ package org.ignitionmdc.apache.kafka.client;
 import com.inductiveautomation.ignition.client.model.ClientContext;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
 import com.inductiveautomation.ignition.common.script.ScriptManager;
+import com.inductiveautomation.ignition.common.script.hints.PropertiesFileDocProvider;
 import com.inductiveautomation.vision.api.client.AbstractClientModuleHook;
 import org.ignitionmdc.apache.kafka.Kafka_Com;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ public class ClientHook extends AbstractClientModuleHook {
 
     @Override
     public void initializeScriptManager(ScriptManager manager) {
-        manager.addScriptModule("system.kafka", Kafka_Com.class);
+//        manager.addScriptModule("system.kafka", Kafka_Com.class, new PropertiesFileDocProvider());
+        manager.addScriptModule("system.kafka", new Kafka_Com(), new PropertiesFileDocProvider());
     }
 }

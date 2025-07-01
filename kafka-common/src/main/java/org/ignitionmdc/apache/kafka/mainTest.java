@@ -7,7 +7,7 @@ public class mainTest {
         Kafka_Com inst = new Kafka_Com();
 
 //        Consumer c = inst.getSSLConsumer("ia-ae-vuig8-209.ia.local:9093","newtopic2","SDK-Client122847");
-        List<Map> c = inst.getConsumer("ia-ae-vuig8-209.ia.local:9092","newtopic2","SDK-Client23978");
+        List<Map> c = inst.getConsumer(null, "ia-ae-vuig8-209.ia.local:9092","newtopic2","SDK-Client23978");
 //        Consumer c = inst.getConsumer("ia-ae-vuig8-209.ia.local:9093","MyTopic","SDK-Client3");
 /*
         System.out.println(c);
